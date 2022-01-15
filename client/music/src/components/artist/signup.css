@@ -1,0 +1,32 @@
+.total_sign{
+    margin-top: 8%;
+    height: 370px;
+    width: 300px;
+    background-color: rgb(173, 245, 235);
+    align-items: center;
+    margin-left: 38%;
+    line-height: 1.5;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.total_signup>input{
+    height: 25px;
+    width: 80%;
+    border: 10px;
+}
+.total_signup>button{
+    height: 30px;
+    width: fit-content;
+    background-color: rgb(55, 131, 231);
+    border-radius: 5px;
+}
+.total_signin>input{
+    height: 25px;
+    width: 80%;
+    border: 10px;
+}
+.total_signin>button{
+    height: 30px;
+    width: fit-content;
+    background-color: rgb(31, 95, 179);
+    border-radius: 5px;
+}
