@@ -21,8 +21,7 @@ export default function Guest() {
     const data = res.data.album;
     // setAlbum(data.data.album);
     const slice = data.slice(offset, offset + perPage);
-    console.log("slice", slice);
-
+   
     const postData = slice.map((data) => (
       <div key={data._id} className="disp">
         <div className="album">

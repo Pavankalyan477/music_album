@@ -9,28 +9,34 @@ export default function Navbar() {
   async function get(name) {
     var res = await fetch(`http://localhost:2233/album/artist/${name}`);
     var data = await res.json();
-    console.log("darw",data)
-    return data.item;
+    // console.log("darw",data)
+    return data.album;
   }
   async function main() {
     let name = document.querySelector(".inp").value;
     let search = await get(name);
    
-
-    if (search === undefined) {
-      return false;
-    }
    
-    if (search.length !== 1) {
-      let show = document.querySelector(".hate_you");
-      show.style.display = "none";
-    } else {
-      let show = document.querySelector(".hate_you");
+    if (search === undefined) {
+      return "Artist Not Found";
+    }
+    let show = document.querySelector(".hate_you")
+    // console.log("show", show.style.display)
+    // if ( show.style.display =="block") {
+    //   // let show = document.querySelector(".hate_you");
+    //   show.style.display = "none";
+    // } else if(show.style.display =="none") {
+    //   // let show = document.querySelector(".hate_you");
       show.style.display = "block";
       
       setDisplay(search);
-    }
+    // }
   }
+  const fncs=()=>{
+    let show = document.querySelector(".hate_you")
+    show.style.display = "none";
+  }
+  console.log("darw",display)
 
   function debounce(func, delay) {
     if (timerId) {
@@ -57,21 +63,23 @@ export default function Navbar() {
                   border: "1px solid black",
                   padding: "5px",
                   margin: "auto",
-                  display: "none",
+                   display: "none",
                   position: "absolute",
                   top: "60px",
                   left: "765px",
                   overflow: "scroll",
                   zIndex: 1,
+                  color:"red"
                 }}>
-                    {display.map((data)=>(
+                   
                         <div>
-                        <div>{data.Artist}</div>
-                        <button ><Link to={`/album/${data._id}`} >ALBUM</Link></button>
+                        <div>{display.Artist}</div>
+                        <button onClick={fncs} ><Link to={`/album/${display._id}`} >ALBUM</Link></button>
                         </div>
-                    ))}
+                   
                     
                 </div>
+                
             </div>
         </div>
     )
