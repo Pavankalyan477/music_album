@@ -61,15 +61,15 @@ export default function Navbar() {
                   background: "white",
                   alignItems: "center",
                   border: "1px solid black",
-                  padding: "5px",
+                  padding: "6px",
                   margin: "auto",
                    display: "none",
                   position: "absolute",
                   top: "60px",
                   left: "765px",
                   overflow: "scroll",
-                  zIndex: 1,
-                  color:"red"
+                  zIndex:"1",
+                color: 'pink'
                 }}>
                    
                         <div>
