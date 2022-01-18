@@ -15,6 +15,8 @@ function App() {
         <Navbar/>
         <Guest/>
       </Route>
+      
+
 
       <Route exact path="/album/:id">
         <Navbar/>

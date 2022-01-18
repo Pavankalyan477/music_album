@@ -7,22 +7,93 @@ import { Link } from "react-router-dom";
 
 export default function Guest() {
   const [album, setAlbum] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [perPage] = useState(3);
-  const [pageCount, setPageCount] = useState(0);
+  const [total, setTotal] = useState(1);
+  // const [perPage] = useState(3);
+  const [pageCount, setPageCount] = useState(1);
+  const [original,setOriginal]=useState([]);
 
+var pgsize=5;
   const handleDeadline = async() => {
     const {data} = await axios.get("http://localhost:2233/album/sortbyyear");
     setAlbum(data.contest);
 }
 
   const fetchdata = async () => {
-    const res = await axios.get("http://localhost:2233/album");
+    const res = await axios.get(`http://localhost:2233/album/?size=${pgsize}&page=${pageCount}`);
     const data = res.data.album;
-    // setAlbum(data.data.album);
-    const slice = data.slice(offset, offset + perPage);
+    setAlbum(data)
+     setOriginal(data);
+     setTotal(res.data.totalPage)
+  }
+
+  const handlePageClick1 = () => {
+    if(pageCount> 0){
+    const count = pageCount-1;
+    document.getElementById("btn").style.background = "white";
+    setPageCount(count)
+    }
+    if(pageCount===2){
+       document.getElementById("btn1").style.background = "black";
+    }
+    console.log(pageCount)
+};
+ const handlePageClick = () => {
+  if(pageCount<total){
+    const count = pageCount+1;
+    
+     document.getElementById("btn1").style.background = "white";
+    setPageCount(count)
+    }
+    if(pageCount===(total-1)){
+       document.getElementById("btn").style.background = "black";
+    }
+    console.log(pageCount)
+};
+
+  useEffect(() => {
+    fetchdata();
    
-    const postData = slice.map((data) => (
+  }, [pageCount]);
+ var array=original
+  const genrefilter = (e) => {
+    console.log("val,val",original)
+  setAlbum([...original])
+  
+   var val=e.target.value;
+   
+   console.log("item",album)
+   var arr=[];
+    arr=album.filter((item) => (
+      
+        item.Genre==val
+        
+    ))
+    // console.log("ite",album.Genre,val)
+
+
+    setAlbum(arr)
+    console.log("original",album)
+   
+}
+
+  return (
+    <div style={{ marginTop: "9%" }}>
+      <div>
+        <h3>Filters</h3>
+        <button onClick={handleDeadline} >Sort by Year</button>
+        <div>
+        Filter by Genre : 
+        <select onChange={genrefilter} name="Genre" id="genre" style={{width:"10%",color:"black"}}>
+        <option value="none">none</option>
+          <option value="mass">mass</option>
+          <option value="melody">melody</option>
+          <option value="romantic">romantic</option>
+          <option value="salsa">salsa</option>
+        </select>
+        {/* <button >Filter</button> */}
+          </div> 
+      </div>
+     { album.map((data) => (
       <div key={data._id} className="disp">
         <div className="album">
           <div className="album_cover">
@@ -36,50 +107,17 @@ export default function Guest() {
               <h3>{data.Artist}</h3>
               <div>Published on: {data.year}</div>
               <div>Total Songs: {data.songs.length}</div> 
+              <p>Genre: {data.Genre}</p>
               <button ><Link to={`/album/${data._id}`} >ALBUM</Link></button>
             </div>
           </div>
         </div>
       </div>
-    ));
-   
-    setAlbum(postData);
-    setPageCount(Math.ceil(data.length / perPage));
-  };
-  const handlePageClick = (e) => {
-    const selectedPage = e.selected;
-    setOffset(selectedPage + 1);
-  };
-
-  useEffect(() => {
-    fetchdata();
-  }, [offset]);
-
-  return (
-    <div style={{ marginTop: "9%" }}>
-      <div>
-        <h3>Filters</h3>
-        <button onClick={handleDeadline} >Sort by Year</button>
-        <button>Filter by Genre</button>
-      </div>
-     
-      <div className="App">
-        {album}
-        <br />
-        <ReactPaginate
-          previousLabel={"prev"}
-          nextLabel={"next"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}
-        />
-      </div>
+    ))}
+     <button onClick={handlePageClick1} id="btn1" ><Link to={`?size=${pgsize}&page=${pageCount-1}`} className='Songs'> prev</Link></button>
+      &emsp;&emsp;<b  >{pageCount}</b>&emsp;&emsp;
+      <button onClick={handlePageClick} id="btn"><Link to={`?size=${pgsize}&page=${pageCount+1}`} className='Songs'> next</Link></button>
     </div>
+   
   );
 }
