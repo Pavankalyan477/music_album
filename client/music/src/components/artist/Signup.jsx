@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import "./signup.css"
 import axios from "axios";
 
 export default function Signup() {
     const [sign,setSign]=useState([]);
+    const history=useHistory();
+    
 
     const signupdata= async()=>{
         const data=await axios.get("http://localhost:2233/signup")
@@ -17,10 +20,18 @@ export default function Signup() {
     const handleclick=()=>{
         var email    = document.getElementById("mail").value;
         var password =  document.getElementById("psd").value;
-        console.log("sign:",email,password)
+        console.log("sign:",email,password,sign[0].password)
         for(let i=0;i<sign.length;i++){
             if(email===sign[i].email && password===sign[i].password){
-                Redirect("/edit");
+               
+                history.push("/edit");
+                break;
+            }else{
+                if(i===sign.length-1){
+                    alert("Please, Enter correct Creditials")
+                    break;
+                }
+                
             }
         }
         
@@ -47,8 +58,8 @@ export default function Signup() {
                 <label htmlFor="mail"  >E-Mail</label><br />
                 <input type="text" placeholder='Enter your Mail' id='mail' /><br />
                 <label htmlFor="password">Password</label><br />
-                <input type="text" placeholder='Enter your Password' id='psd'  /><br /> <br />
-                <button onClick={handleclick} > <Link>LOGIN</Link> </button><br /> 
+                <input type="password" placeholder='Enter your Password' id='psd'  /><br /> <br />
+                <button onClick={handleclick} > <Link >LOGIN</Link> </button><br /> 
                 <div>OR</div>
                 <button>SignIn With FACEBOOK</button><br /> 
                 {/* <div>Don't have an Account, Create here</div>
